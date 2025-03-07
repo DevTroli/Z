@@ -39,7 +39,7 @@ jobs:
 
       - name: Run tests
         env:
-          DATABASE_URL: postgres://socialuser:socialpass@db:5432/socialdb
+          DATABASE_URL: postgres://socialuser:socialpass@localhost:5432/socialdb
           SECRET_KEY: django-insecure-secret-key
           DEBUG: 1
         run: |
