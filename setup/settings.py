@@ -1,6 +1,8 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from datetime import timedelta
+import dj_database_url
 
 load_dotenv()
 
@@ -10,7 +12,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-secret-key")
 
 DEBUG = int(os.getenv("DEBUG", 1))
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"]
+ALLOWED_HOSTS = []
 
 
 INSTALLED_APPS = [
@@ -20,7 +22,24 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
+    "rest_framework_simplejwt",
+    "authentication",
 ]
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}
+
+AUTH_USER_MODEL = "authentication.User"
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -52,17 +71,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "setup.wsgi.application"
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB", "socialdb"),
-        "USER": os.getenv("POSTGRES_USER", "socialuser"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "socialpass"),
-        "HOST": os.getenv("DATABASE_HOST", "db"),
-        "PORT": os.getenv("DATABASE_PORT", "5432"),
-    }
-}
+DATABASE_URL = os.getenv("DATABASE_URL")
 
+if DATABASE_URL:
+    DATABASES = {
+        "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=600)
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.getenv("POSTGRES_DB", "socialdb"),
+            "USER": os.getenv("POSTGRES_USER", "socialuser"),
+            "PASSWORD": os.getenv("POSTGRES_PASSWORD", "socialpass"),
+            "HOST": os.getenv("DATABASE_HOST", "db"),
+            "PORT": os.getenv("DATABASE_PORT", "5432"),
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
