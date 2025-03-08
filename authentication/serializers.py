@@ -6,10 +6,11 @@ User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
     class Meta:
         model = User
         fields = ("id", "username", "email", "password")
-        extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
         user = User.objects.create_user(
@@ -24,5 +25,6 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-        token["username"] = user.username
+        token["username"] = user.username  # Adiciona o username ao token
+        token["email"] = user.email  # Adiciona o email ao token (opcional)
         return token
