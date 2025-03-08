@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="max-w-2xl mx-auto">
+  <!-- Criar Novo Tweet -->
+  <div class="bg-white rounded-lg shadow mb-4 p-4">
+    <textarea id="tweet-content" class="w-full p-2 border-b border-gray-200 focus:outline-none"
+      placeholder="O que está acontecendo?" rows="3"></textarea>
+    <div class="flex justify-end mt-2">
+      <button id="tweet-button" class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600">Tweet</button>
+    </div>
+  </div>
+
+  <!-- Feed de Tweets -->
+  <div id="tweets" class="space-y-4"></div>
+  <div id="loading" class="hidden text-center py-4">
+    <span class="animate-spin">🌀</span>
+  </div>
+</div>
+
+  <script src="{% static 'feed.js' %}"></script>
+{% endblock %}
