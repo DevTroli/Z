@@ -12,7 +12,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-secret-key")
 
 DEBUG = int(os.getenv("DEBUG", 1))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
 
 
 INSTALLED_APPS = [
@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "authentication",
+    "tweets",
 ]
 
 REST_FRAMEWORK = {
@@ -64,6 +65,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "core.context_processors.user_context",
             ],
         },
     },
@@ -112,6 +114,9 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
+
+LOGIN_URL = "/login/"
+REGISTER_URL = "/register/"
 
 # Diretório onde os arquivos estáticos serão coletados (usado em produção)
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
