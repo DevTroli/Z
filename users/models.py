@@ -12,8 +12,9 @@ class User(AbstractUser):
     def avatar(self):
         """Gera URL do avatar dinâmico usando UI Avatars"""
         name = self.get_full_name() or self.username
+        name_param = name.replace(' ', '+')
         params = {
-            'name': quote(name),
+            'name': name_param,
             'background': 'random',
             'size': '128',
             'rounded': 'true',
