@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-md mx-auto mt-20 p-6 bg-white rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-6">🚀 Criar Conta no Z</h2>
+        <form id="registerForm" class="space-y-4">
+            <input type="text" name="username" placeholder="Username" 
+                   class="w-full p-2 border rounded" required>
+            <input type="email" name="email" placeholder="Email"
+                   class="w-full p-2 border rounded" required>
+            <input type="password" name="password" placeholder="Password" 
+                   class="w-full p-2 border rounded" required>
+            <button type="submit" 
+                    class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600">
+                Registrar
+            </button>
+        </form>
+        <p class="mt-4 text-center">
+            Já tem conta? 
+            <a href="/login" class="text-blue-500 hover:underline">Faça login</a>
+        </p>
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = {
+                username: e.target.username.value,
+                email: e.target.email.value,
+                password: e.target.password.value
+            };
+
+            try {
+                const response = await fetch('/api/auth/register/', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    window.location.href = '/login';
+                } else {
+                    const error = await response.json();
+                    alert(`Erro: ${error.detail || JSON.stringify(error)}`);
+                }
+            } catch (error) {
+                console.error('Registration failed:', error);
+            }
+        });
+    </script>
+</body>
+</html>
