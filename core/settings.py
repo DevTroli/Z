@@ -66,17 +66,25 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'zdb'),
-        'USER': os.getenv('POSTGRES_USER', 'zuser'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'zpass'),
-        # Usa 'localhost' em vez de 'db' quando estiver no GitHub Actions
-        'HOST': os.getenv('DATABASE_HOST', 'localhost' if os.environ.get('GITHUB_ACTIONS') == 'true' else 'db'),
-        'PORT': os.getenv('DATABASE_PORT', '5432'),
+if os.environ.get('GITHUB_ACTIONS') == 'true':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
+else:
+    # Configuração normal para PostgreSQL
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('POSTGRES_DB', 'zdb'),
+            'USER': os.getenv('POSTGRES_USER', 'zuser'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'zpass'),
+            'HOST': os.getenv('DATABASE_HOST', 'db'),
+            'PORT': os.getenv('DATABASE_PORT', '5432'),
+        }
+    }
 
 
 
