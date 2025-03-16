@@ -72,7 +72,8 @@ DATABASES = {
         'NAME': os.getenv('POSTGRES_DB', 'zdb'),
         'USER': os.getenv('POSTGRES_USER', 'zuser'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'zpass'),
-        'HOST': os.getenv('DATABASE_HOST', 'db'),
+        # Usa 'localhost' em vez de 'db' quando estiver no GitHub Actions
+        'HOST': os.getenv('DATABASE_HOST', 'localhost' if os.environ.get('GITHUB_ACTIONS') == 'true' else 'db'),
         'PORT': os.getenv('DATABASE_PORT', '5432'),
     }
 }
