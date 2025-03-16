@@ -14,7 +14,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-
+      start_period: 5s
+      
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
@@ -27,7 +28,8 @@ services:
       - SECRET_KEY=django-insecure-secret-key
       - DEBUG=1
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     restart: unless-stopped
 
 
