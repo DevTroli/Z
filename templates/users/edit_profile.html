@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class=" bg-gray-50 py-8">
+    <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+        <div class="md:flex">
+            <div class="p-8 w-full">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="uppercase tracking-wide text-sm text-indigo-600 font-semibold">Seu Perfil</div>
+                    <a href="/" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Voltar</a>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Editar Perfil</h2>
+                
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <!-- Tratamento de erros -->
+                    {% if form.errors %}
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-red-600">Por favor corrija os erros abaixo.</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Campo Username -->
+                    <div>
+                        <label for="id_username" class="block text-sm font-medium text-gray-700 mb-1">
+                            Nome de usuário
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <input type="text" name="username" id="id_username" value="{{ form.username.value|default:'' }}" class="pl-10 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        {% if form.username.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.username.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Campo Bio -->
+                    <div>
+                        <label for="id_bio" class="block text-sm font-medium text-gray-700 mb-1">
+                            Biografia
+                        </label>
+                        <textarea name="bio" id="id_bio" rows="4" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md h-32">{{ form.bio.value|default:'' }}</textarea>
+                        <p class="mt-1 text-xs text-gray-500">Escreva um pouco sobre você (opcional)</p>
+                        {% if form.bio.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.bio.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Botões -->
+                    <div class="flex items-center justify-between pt-4">
+                        <a href="/" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Cancelar
+                        </a>
+                        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Salvar alterações
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
