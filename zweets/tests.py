@@ -23,9 +23,9 @@ class FeedAuthTest(TestCase):
         response = self.client.get(reverse("zweets:feed"))
         self.assertContains(response, "Faça")
         self.assertContains(response, "login")
-        self.assertContains(response, "para Zweetar")
+        self.assertContains(response, "para poder compartilhar seus Zweets")
 
-        # Autenticado
+        # Autenticado'
         user = User.objects.create_user(username="test")
         self.client.force_login(user)
         response = self.client.get(reverse("zweets:feed"))
