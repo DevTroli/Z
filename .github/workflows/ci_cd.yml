@@ -37,12 +37,11 @@ jobs:
 
       - name: Run tests
         env:
-          env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
           SECRET_KEY: django-insecure-secret-key
           DEBUG: 1
         run: |
-          python manage.py test
+          python manage.py test -v 2
 
   deploy:
     runs-on: ubuntu-latest
