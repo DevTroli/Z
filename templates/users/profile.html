@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto mt-8">
+  <!-- Header do Perfil -->
+  <div class="bg-white p-6 rounded-lg shadow-md text-center">
+    <img src="{{ profile_user.avatar_url }}&size=128" class="w-32 h-32 rounded-full mx-auto mb-4">
+    <h1 class="text-2xl font-bold">{{ profile_user.username }}</h1>
+    <p class="text-gray-600 mt-2">{{ profile_user.bio }}</p>
+
+    <!-- Botão Seguir/Desseguir -->
+    {% if user != profile_user %}
+    <form method="POST" action="{% url 'follow' profile_user.username %}" class="mt-4">
+      {% csrf_token %}
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        {% if is_following %}Desseguir{% else %}Seguir{% endif %}
+      </button>
+    </form>
+    {% endif %}
+  </div>
+
+  <!-- Zweets do Usuário -->
+  <div class="mt-8 space-y-4">
+    {% for zweet in zweets %}
+    {% include "zweets/zweet_list.html" %}
+    {% empty %}
+    <div class="bg-white p-4 rounded-lg shadow-md text-center text-gray-500">
+      Nenhum Zweet encontrado.
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,11 +1,12 @@
 from django.contrib import admin
 from django.urls import path, include
-from users.views import ZLoginView, ZSignupView, ZLogoutView, ProfileUpdateView
+from users.views import ZLoginView, ZSignupView, ZLogoutView, ProfileUpdateView, ProfileView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("zweets.urls")),
-    path("edit-profile/", ProfileUpdateView.as_view(), name="edit_profile"),
+    path("@<str:username>/", ProfileView.as_view(), name="profile"),
+    path("@<str:username>/edit", ProfileUpdateView.as_view(), name="edit_profile"),
     path("api/", include("zweets.api.urls")),
     path("login/", ZLoginView.as_view(), name="login"),
     path("signup/", ZSignupView.as_view(), name="signup"),
