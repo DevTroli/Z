@@ -1,5 +1,4 @@
-from django.views.generic import ListView
-from django.views.generic import CreateView
+from django.views.generic import ListView, CreateView
 from django.urls import reverse_lazy
 from .models import Zweet
 
@@ -11,9 +10,7 @@ class FeedView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return Zweet.objects.select_related("user").prefetch_related("likes")[
-            :20
-        ]  # Temporário para testes
+        return Zweet.objects.select_related("user").prefetch_related("likes")[:20]
 
 
 class ZweetCreateView(CreateView):
