@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto mt-8">
+  {% include "zweets/zweet_list.html" with zweet=zweet %}
+
+  <!-- Comentários -->
+  <div class="mt-8">
+    <h3 class="text-xl font-bold mb-4">Comentários</h3>
+    {% for comment in zweet.comments.all %}
+      {% include "zweets/comments.html" %}
+    {% empty %}
+      <p class="text-gray-500">Nenhum comentário ainda, seja o primeiro a comentar!</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
