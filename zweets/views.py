@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, DetailView
 from django.urls import reverse_lazy
 from .models import Zweet
 
@@ -22,3 +22,9 @@ class ZweetCreateView(CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+class ZweetDetailView(DetailView):
+    model = Zweet
+    template_name = "zweets/zweet_detail.html"
+    context_object_name = "zweet"
