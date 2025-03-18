@@ -4,8 +4,8 @@
   <div class="max-w-md w-full bg-white rounded-xl shadow-xl overflow-hidden my-6">
     <div class="px-4 py-4 sm:p-6">
       <div class="text-center">
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-3 sm:mb-6">Crie sua conta</h2>
-        <p class="text-sm text-gray-500 mb-4 sm:mb-8">Preencha os campos abaixo para começar</p>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 sm:mb-4">Crie sua conta</h2>
+        <p class="text-sm text-gray-500 mb-0.5 sm:mb-6">Preencha os campos abaixo para começar</p>
       </div>
       
       <form method="post" class="space-y-4 sm:space-y-6">
@@ -58,12 +58,6 @@
           <label for="id_password1" class="block text-sm font-medium text-gray-700">Senha</label>
           <div class="mt-1">
             {{ form.password1 }}
-            <p class="mt-1 text-xs text-gray-500">
-              • No mínimo 8 caracteres<br>
-              • Não pode ser similar a seus dados pessoais<br>
-              • Não pode ser uma senha comum<br>
-              • Não pode ser inteiramente numérica
-            </p>
             {% if form.password1.errors %}
               <p class="mt-1 text-xs text-red-600">{{ form.password1.errors }}</p>
             {% endif %}
