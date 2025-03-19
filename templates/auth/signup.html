@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="min-h-screen flex items-center justify-center py-6 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-md w-full bg-white rounded-xl shadow-xl overflow-hidden my-6">
+  <div class="max-w-md w-full bg-gray-950 rounded-xl shadow-xl overflow-hidden my-6">
     <div class="px-4 py-4 sm:p-6">
       <div class="text-center">
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 sm:mb-4">Crie sua conta</h2>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white sm:mb-4">Crie sua conta</h2>
         <p class="text-sm text-gray-500 mb-0.5 sm:mb-6">Preencha os campos abaixo para começar</p>
       </div>
       
@@ -12,7 +12,7 @@
         {% csrf_token %}
         
         <div>
-          <label for="id_username" class="block text-sm font-medium text-gray-700">Nome de usuário</label>
+          <label for="id_username" class="block text-sm font-medium text-white">Nome de usuário</label>
           <div class="mt-1">
             {{ form.username }}
             <p class="mt-1 text-xs text-gray-500">Máximo 150 caracteres. Apenas letras, números e @/./+/-/_</p>
@@ -23,7 +23,7 @@
         </div>
 
         <div>
-          <label for="id_email" class="block text-sm font-medium text-gray-700">Email</label>
+          <label for="id_email" class="block text-sm font-medium text-white">Email</label>
           <div class="mt-1">
             {{ form.email }}
             {% if form.email.errors %}
@@ -34,7 +34,7 @@
 
         <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
           <div>
-            <label for="id_first_name" class="block text-sm font-medium text-gray-700">Nome</label>
+            <label for="id_first_name" class="block text-sm font-medium text-white">Nome</label>
             <div class="mt-1">
               {{ form.first_name }}
               {% if form.first_name.errors %}
@@ -44,7 +44,7 @@
           </div>
 
           <div>
-            <label for="id_last_name" class="block text-sm font-medium text-gray-700">Sobrenome</label>
+            <label for="id_last_name" class="block text-sm font-medium text-white">Sobrenome</label>
             <div class="mt-1">
               {{ form.last_name }}
               {% if form.last_name.errors %}
@@ -55,7 +55,7 @@
         </div>
 
         <div>
-          <label for="id_password1" class="block text-sm font-medium text-gray-700">Senha</label>
+          <label for="id_password1" class="block text-sm font-medium text-white">Senha</label>
           <div class="mt-1">
             {{ form.password1 }}
             {% if form.password1.errors %}
@@ -65,7 +65,7 @@
         </div>
 
         <div>
-          <label for="id_password2" class="block text-sm font-medium text-gray-700">Confirme a senha</label>
+          <label for="id_password2" class="block text-sm font-medium text-white">Confirme a senha</label>
           <div class="mt-1">
             {{ form.password2 }}
             <p class="mt-1 text-xs text-gray-500">Digite a mesma senha novamente para verificação.</p>
