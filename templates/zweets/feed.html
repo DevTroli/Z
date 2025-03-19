@@ -17,12 +17,6 @@
               </svg>
               <span class="ml-4 text-lg font-medium">Início</span>
             </a>
-            <a href="{% url 'profile' username=user.username %}" class="flex items-center p-4 text-gray-900 rounded-xl hover:bg-gray-100 group">
-              <svg class="w-6 h-6 text-blue-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
-              </svg>
-              <span class="ml-4 text-lg font-medium">Perfil</span>
-            </a>
             <a href="#" class="flex items-center p-4 text-gray-900 rounded-xl hover:bg-gray-100 group">
               <svg class="w-6 h-6 text-blue-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" d="M5 5a3 3 0 015-2.236A3 3 0 0114.83 6H16a2 2 0 110 4h-5V9a1 1 0 10-2 0v1H4a2 2 0 110-4h1.17C5.06 5.687 5 5.35 5 5zm4 1V5a1 1 0 10-1 1h1zm3 0a1 1 0 10-1-1v1h1z" clip-rule="evenodd"></path>
@@ -89,10 +83,18 @@
           {% include "zweets/zweet_list.html" %}
         </div>
         
-        <!-- Loading Indicator -->
-        <div id="loading" class="hidden text-center py-8">
-          <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 mx-auto"></div>
-        </div>
+        <div class="flex justify-center gap-2 my-6">
+          {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="px-4 py-2 bg-gray-200 rounded">
+              Anterior
+            </a>
+          {% endif %}
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}" class="px-4 py-2 bg-blue-500 text-white rounded">
+            Próxima
+          </a>
+        {% endif %}
+        </div>      
       </div>
     </div>
     
