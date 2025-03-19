@@ -11,7 +11,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-secret-key")
 
 DEBUG = int(os.getenv("DEBUG", 1))
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0", "https://pablotroli.pythonanywhere.com/"]
 
 AUTH_USER_MODEL = "users.User"
 
