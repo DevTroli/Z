@@ -42,7 +42,7 @@
                                     <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input type="text" name="username" id="id_username" value="{{ form.username.value|default:'' }}" class="pl-10 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            <input type="text" name="username" id="id_username" value="{{ form.username.value|default:'' }}" class="pl-10 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-200">
                         </div>
                         {% if form.username.errors %}
                         <p class="mt-2 text-sm text-red-600">{{ form.username.errors.0 }}</p>
@@ -54,7 +54,7 @@
                         <label for="id_bio" class="block text-sm font-medium text-white mb-1">
                             Biografia
                         </label>
-                        <textarea name="bio" id="id_bio" rows="4" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md h-32">{{ form.bio.value|default:'' }}</textarea>
+                        <textarea name="bio" id="id_bio" rows="4" class=" text-gray-950 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md h-32 bg-gray-200">{{ form.bio.value|default:'' }}</textarea>
                         <p class="mt-1 text-xs text-white">Escreva um pouco sobre você (opcional)</p>
                         {% if form.bio.errors %}
                         <p class="mt-2 text-sm text-red-600">{{ form.bio.errors.0 }}</p>
