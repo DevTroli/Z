@@ -1,7 +1,11 @@
-from django.views.generic import ListView, CreateView, DetailView
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import ListView, DetailView, CreateView, View
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
-from .models import Zweet
+from django.http import HttpResponseRedirect
+from django.contrib import messages
+
+from .models import Zweet, Comment
 
 
 class FeedView(LoginRequiredMixin, ListView):
@@ -42,3 +46,37 @@ class ZweetDetailView(DetailView):
     model = Zweet
     template_name = "zweets/zweet_detail.html"
     context_object_name = "zweet"
+
+
+class LikeZweetView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        zweet = get_object_or_404(Zweet, pk=pk)
+
+        # Toggle like
+        if request.user in zweet.likes.all():
+            zweet.likes.remove(request.user)
+        else:
+            zweet.likes.add(request.user)
+
+        # Redirect back to the referring page
+        referer = request.META.get("HTTP_REFERER")
+        if referer:
+            return HttpResponseRedirect(referer)
+        else:
+            return HttpResponseRedirect(
+                reverse("zweets:zweet_detail", kwargs={"pk": pk})
+            )
+
+
+class AddCommentView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        zweet = get_object_or_404(Zweet, pk=pk)
+        content = request.POST.get("content")
+
+        if content:
+            # Create new comment
+            Comment.objects.create(user=request.user, zweet=zweet, content=content)
+        else:
+            messages.error(request, "O comentário não pode estar vazio.")
+
+        return HttpResponseRedirect(reverse("zweets:zweet_detail", kwargs={"pk": pk}))
