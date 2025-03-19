@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-xl mx-auto p-4">
+  <!-- Header do Perfil -->
+  <div class="bg-gray-950 p-6 rounded-lg shadow-md text-center">
+    <img src="{{ profile_user.avatar_url }}&size=128" class="w-32 h-32 rounded-full mx-auto mb-4">
+    <h1 class="text-2xl font-bold text-white">{{ profile_user.username }}</h1>
+    <p class="mt-2 text-white">{{ profile_user.bio }}</p>
+
+    <!-- Métricas do Perfil -->
+    <div class="flex justify-center space-x-6 mt-4 text-gray-300">
+      <div class="flex flex-col items-center">
+        <span class="font-bold text-green-600">{{ zweets|length }}</span>
+        <span>Zweets</span>
+      </div>
+      <div class="flex flex-col items-center">
+        <span class="font-bold text-green-600">{{ profile_user.followers.count }}</span>
+        <span>Seguidores</span>
+      </div>
+      <div class="flex flex-col items-center">
+        <span class="font-bold text-green-600">{{ profile_user.following.count }}</span>
+        <span>Seguindo</span>
+      </div>
+    </div>
+
+    <!-- Botão Seguir/Desseguir -->
+    {% if user != profile_user %}
+    <form method="POST" action="{% url 'follow' profile_user.username %}" class="mt-4">
+      {% csrf_token %}
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        {% if is_following %}Desseguir{% else %}Seguir{% endif %}
+      </button>
+    </form>
+    {% endif %}
+  </div>
+
+  <!-- Zweets do Usuário -->
+  <div class="mt-8 mb-2 space-y-4">
+      <div class="mt-8 space-y-4">
+        {% include "zweets/zweet_list.html" with zweets=zweets %}
+      </div>
+  </div>
+</div>
+{% endblock %}

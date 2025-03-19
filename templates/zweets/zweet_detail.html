@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto p-8">
+  <div class="bg-gray-950 p-6 rounded-lg shadow-md mb-6">
+    <a href="{% url 'profile' username=zweet.user.username %}"
+ class="flex items-center mb-3">
+      <img src="{{ zweet.user.avatar_url }}&size=50" class="w-12 h-12 rounded-full mr-3"
+        alt="Avatar de {{ zweet.user.username }}">
+      <div>
+        <span class="font-bold text-lg text-white">{{ zweet.user.username }}</span>
+        <p class="text-gray-50 text-sm">{{ zweet.created_at|date:"d/m/Y H:i" }}</p>
+      </div>
+    </a>
+    <p class="text-gray-100 text-lg mb-4">{{ zweet.content }}</p>
+    
+    <!-- Ações do Zweet (Curtir e Comentar) -->
+    <div class="flex items-center space-x-6 pt-4">
+      <!-- Botão de Curtir -->
+      <form method="POST" action="{% url 'zweets:like_zweet' pk=zweet.id %}" class="inline">
+        {% csrf_token %}
+        <button type="submit" class="flex items-center text-gray-500 hover:text-red-500 transition-colors">
+          <svg class="w-6 h-6 mr-1 {% if user in zweet.likes.all %}text-red-500 fill-current{% endif %}" 
+               fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+            </path>
+          </svg>
+          <span class="text-base text-white">{{ zweet.likes.count }} curtidas</span>
+        </button>
+      </form>
+      
+      <!-- Botão para mostrar/esconder formulário de comentário -->
+      <button id="showCommentForm" class="flex items-center text-gray-50 hover:text-green-500 transition-colors">
+        <svg class="w-6 h-6 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+          </path>
+        </svg>
+        <span class="text-base text-white">{{ zweet.comments.count }} comentários</span>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Formulário de Comentário -->
+  <div id="commentFormContainer" class="bg-gray-950 p-6 rounded-lg shadow-md mb-6 {% if not comment_form_visible %}hidden{% endif %}">
+    {% if user.is_authenticated %}
+      <form method="POST" action="{% url 'zweets:add_comment' pk=zweet.id %}">
+        {% csrf_token %}
+        <div class="flex space-x-4">
+          <img src="{{ user.avatar_url }}&size=40" class="w-10 h-10 rounded-full" alt="Avatar">
+          <div class="flex-1">
+            <textarea name="content" class="w-full p-3 border border-gray-200 rounded-xl bg-gray-200 focus:ring-1 focus:ring-blue-200 resize-none" 
+                      placeholder="Escreva seu comentário..." rows="3" required></textarea>
+            <div class="flex justify-end mt-3">
+              <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-full hover:bg-blue-600 font-medium">
+                Comentar
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    {% else %}
+      <p class="text-center text-gray-500">
+        <a href="{% url 'login' %}" class="text-blue-500 hover:underline">Faça login</a> para comentar este Zweet.
+      </p>
+    {% endif %}
+  </div>
+  
+  <!-- Comentários -->
+  <div class="mt-4">
+    <h3 class="text-xl font-bold text-white">Comentários</h3>
+    {% for comment in zweet.comments.all %}
+      {% include "zweets/comments.html" %}
+    {% empty %}
+      <p class="text-white ml-1">Nenhum comentário ainda, seja o primeiro a comentar!</p>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const commentFormButton = document.getElementById('showCommentForm');
+    const commentFormContainer = document.getElementById('commentFormContainer');
+    
+    commentFormButton.addEventListener('click', function() {
+      commentFormContainer.classList.toggle('hidden');
+    });
+  });
+</script>
+{% endblock %}

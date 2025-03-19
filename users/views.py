@@ -1,12 +1,13 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import logout
-from django.views.generic import CreateView, UpdateView
-from django.shortcuts import redirect
+from django.views.generic import CreateView, UpdateView, DetailView, View
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import CustomUserCreationForm
-from users.models import User
+from users.models import User, Follow
+from zweets.models import Zweet
 
 
 class ZLoginView(LoginView):
@@ -35,6 +36,30 @@ class ZLogoutView(LogoutView):
         return redirect("/")
 
 
+class ProfileView(DetailView):
+    model = User
+    template_name = "users/profile.html"
+    context_object_name = "profile_user"
+    slug_field = "username"
+    slug_url_kwarg = "username"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_zweets = Zweet.objects.filter(user=self.object)
+
+        context["zweets"] = user_zweets[:20]
+        context["total_zweets"] = user_zweets.count()
+
+        if self.request.user.is_authenticated:
+            context["is_following"] = Follow.objects.filter(
+                follower=self.request.user, followed=self.object
+            ).exists()
+        else:
+            context["is_following"] = False
+
+        return context
+
+
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = User
     fields = ["username", "bio"]
@@ -49,3 +74,11 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         form.fields["username"].widget.attrs.update({"class": "form-control"})
         form.fields["bio"].widget.attrs.update({"class": "form-control"})
         return form
+
+
+class FollowView(View):
+    def post(self, request, username):
+        followed = get_object_or_404(User, username=username)
+        if request.user != followed:
+            Follow.objects.get_or_create(follower=request.user, followed=followed)
+        return redirect("profile", username=username)
