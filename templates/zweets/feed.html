@@ -46,37 +46,101 @@
       <div class="bg-white rounded-2xl shadow-sm mb-6">
 
         <!-- Formulário de Novo Zweet -->
-        {% if user.is_authenticated %}
-        <div class="px-6 py-6 border-b">
-          <div class="flex space-x-4">
-            <img src="{{ user.avatar_url }}&size=50" class="w-12 h-12 rounded-full" alt="Avatar">
-            <form id="zweetForm" method="POST" action="{% url 'zweets:create' %}" class="flex-1">
-              {% csrf_token %}
-              <textarea name="content" class="w-full p-3 border-none bg-gray-50 rounded-xl focus:ring-1 focus:ring-blue-200 resize-none text-lg" 
-                placeholder="O que está acontecendo?" rows="3"></textarea>
-              <div class="flex justify-between items-center mt-4">
-                <div class="flex space-x-3 text-blue-500"></div>
-                <button type="submit" class="bg-blue-500 text-white px-6 py-2.5 rounded-full hover:bg-blue-600 font-medium text-lg">
-                  Zweetar
-                </button>
-              </div>
-            </form>
+{% if user.is_authenticated %}
+<div class="bg-white rounded-xl shadow-sm mb-4 overflow-hidden">
+  <div class="px-4 py-3 border-b border-gray-100">
+    <h2 class="font-bold text-xl text-gray-800">Criar um novo Zweet</h2>
+  </div>
+  
+  <div class="p-4">
+    <div class="flex">
+      <!-- Avatar do usuário -->
+      <div class="mr-3 flex-shrink-0">
+        <img src="{{ user.avatar_url }}&size=50" class="w-12 h-12 rounded-full object-cover border border-gray-200" 
+          alt="Avatar de {{ user.username }}">
+      </div>
+      
+      <!-- Formulário -->
+      <form id="zweetForm" method="POST" action="{% url 'zweets:create' %}" class="flex-1">
+        {% csrf_token %}
+        
+        <!-- Campo de texto -->
+        <div class="mb-3">
+          <textarea name="content" 
+            class="w-full p-3 border-none bg-transparent focus:ring-0 resize-none text-lg placeholder-gray-500" 
+            placeholder="O que está acontecendo?" 
+            rows="3"
+            maxlength="280"
+            id="zweet-content"></textarea>
+        </div>
+        
+        <!-- Contador de caracteres (opcional) -->
+        <div class="text-right text-sm text-gray-500 mb-2 hidden" id="character-counter">
+          <span id="char-count">0</span>/280
+        </div>
+        
+        <!-- Separador -->
+        <div class="border-t border-gray-100 pt-3 mt-2">
+          
+          <!-- Área de ícones e botão -->
+          <div class="flex justify-between items-center">
+            <!-- Ícones de mídia (não funcionais neste estágio) -->
+            <div class="flex space-x-3 text-blue-500">
+              <!-- Ícone de imagem -->
+              <button type="button" class="p-2 rounded-full hover:bg-blue-50 transition-colors" title="Adicionar imagem">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2.001 2.001 0 012.83 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </button>
+              
+              <!-- Ícone de emoji -->
+              <button type="button" class="p-2 rounded-full hover:bg-blue-50 transition-colors" title="Adicionar emoji">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </button>
+              
+              <!-- Ícone de agendar -->
+              <button type="button" class="p-2 rounded-full hover:bg-blue-50 transition-colors" title="Agendar Zweet">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </button>
+            </div>
+            
+            <!-- Botão de Zweetar -->
+            <button type="submit" 
+              class="bg-blue-500 text-white px-5 py-2 rounded-full hover:bg-blue-600 font-medium text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              id="zweet-button">
+              Zweetar
+            </button>
           </div>
         </div>
-        {% else %}
-        <div class="bg-blue-50 p-8 border-b">
-          <h3 class="font-bold text-xl mb-3">Bem-vindo ao Zweeter!</h3>
-          <p class="mb-4 text-lg">Faça login para poder compartilhar seus Zweets com o mundo.</p>
-          <div class="flex space-x-4">
-            <a href="{% url 'login' %}" class="bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 font-medium text-lg">
-              Entrar
-            </a>
-            <a href="{% url 'signup' %}" class="bg-white border border-blue-500 text-blue-500 px-6 py-3 rounded-full hover:bg-blue-50 font-medium text-lg">
-              Cadastrar
-            </a>
-          </div>
-        </div>
-        {% endif %}
+      </form>
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="bg-white rounded-xl shadow-sm mb-4 overflow-hidden">
+  <div class="p-8 text-center">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-blue-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+    </svg>
+    <h3 class="font-bold text-2xl mb-3 text-gray-800">Bem-vindo ao Zweeter!</h3>
+    <p class="mb-6 text-gray-600">Entre agora para compartilhar seus Zweets com o mundo.</p>
+    <div class="flex justify-center space-x-4">
+      <a href="{% url 'login' %}" 
+        class="bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 font-medium text-lg transition-colors">
+        Entrar
+      </a>
+      <a href="{% url 'signup' %}" 
+        class="bg-white border border-blue-500 text-blue-500 px-6 py-3 rounded-full hover:bg-blue-50 font-medium text-lg transition-colors">
+        Cadastrar
+      </a>
+    </div>
+  </div>
+</div>
+{% endif %}
         
         <!-- Lista de Zweets -->
         <div id="feed">
@@ -144,5 +208,46 @@
   </div>
 </div>
 
-<script src="{% static 'js/feed.js' %}"></script>
+<script src="{% static 'js/feed.js' %}">
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const textArea = document.getElementById('zweet-content');
+    const charCount = document.getElementById('char-count');
+    const counterDiv = document.getElementById('character-counter');
+    const submitButton = document.getElementById('zweet-button');
+    
+    textArea.addEventListener('input', function() {
+      const length = this.value.length;
+      charCount.textContent = length;
+      
+      // Mostrar contador apenas quando começar a digitar
+      if (length > 0) {
+        counterDiv.classList.remove('hidden');
+      } else {
+        counterDiv.classList.add('hidden');
+      }
+      
+      // Habilitar/desabilitar botão baseado no conteúdo
+      if (length > 0 && length <= 280) {
+        submitButton.disabled = false;
+      } else {
+        submitButton.disabled = true;
+      }
+      
+      // Mudar cor do contador quando se aproxima do limite
+      if (length > 260) {
+        charCount.classList.add('text-orange-500');
+      } else {
+        charCount.classList.remove('text-orange-500');
+      }
+      
+      if (length > 280) {
+        charCount.classList.add('text-red-500');
+      } else {
+        charCount.classList.remove('text-red-500');
+      }
+    });
+  });
+
+</script>
 {% endblock %}
