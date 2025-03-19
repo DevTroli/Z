@@ -45,9 +45,11 @@ class ProfileView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["zweets"] = Zweet.objects.filter(user=self.object)[:20]
+        user_zweets = Zweet.objects.filter(user=self.object)
 
-        # Verifica se o usuário autenticado está seguindo o perfil que está sendo visualizado
+        context["zweets"] = user_zweets[:20]
+        context["total_zweets"] = user_zweets.count()
+
         if self.request.user.is_authenticated:
             context["is_following"] = Follow.objects.filter(
                 follower=self.request.user, followed=self.object
