@@ -35,7 +35,7 @@ Desenvolvido com uma stack tecnológico robusta, o projeto implementa as melhore
 ### 🌟 Experiência do Usuário
 - **Zweets** - Compartilhe pensamentos e ideias em até 280 caracteres
 - **Feed personalizado** - Conteúdo adaptado às suas preferências e conexões
-- **Notificações em tempo real** - Mantenha-se atualizado instantaneamente
+
 
 ### 🤝 Interação Social
 - **Sistema de seguidores** - Conecte-se com pessoas que compartilham seus interesses
@@ -56,7 +56,7 @@ O Projeto Z utiliza um stack tecnológico moderno e poderoso:
 ### Backend
 - **[Django](https://www.djangoproject.com/)** - Framework web robusto para desenvolvimento rápido
 - **[Django REST Framework](https://www.django-rest-framework.org/)** - Toolkit poderoso para construção de APIs
-- **[Django Channels](https://channels.readthedocs.io/)** - Suporte para WebSockets e comunicação assíncrona
+
 
 ### Frontend
 - **[Tailwind CSS](https://tailwindcss.com/)** - Framework CSS utilitário para design responsivo
@@ -65,13 +65,13 @@ O Projeto Z utiliza um stack tecnológico moderno e poderoso:
 
 ### Persistência e Comunicação
 - **[PostgreSQL](https://www.postgresql.org/)** - Sistema gerenciador de banco de dados relacional
-- **[Redis](https://redis.io/)** - Armazenamento de estrutura de dados em memória para cache e mensageria
+
 
 ### Infraestrutura e DevOps
 - **[Docker](https://www.docker.com/)** - Containerização para ambientes consistentes
 - **[Docker Compose](https://docs.docker.com/compose/)** - Orquestração de múltiplos containers
 - **[GitHub Actions](https://github.com/features/actions)** - Automação de CI/CD
-- **[PythonAnywhere](https://www.pythonanywhere.com/)** - Plataforma de hospedagem Python
+
 
 <br>
 
@@ -90,18 +90,12 @@ O Projeto Z utiliza um stack tecnológico moderno e poderoso:
    cd Z
    ```
 
-2. **Configure as variáveis de ambiente**
-   ```bash
-   cp .env.example .env
-   ```
-   > ⚠️ **Importante**: Edite o arquivo `.env` com suas configurações específicas
-
-3. **Inicie os containers com Docker Compose**
+2. **Inicie os containers com Docker Compose**
    ```bash
    docker-compose up --build
    ```
 
-4. **Acesse a aplicação**
+3. **Acesse a aplicação**
    > 🌐 Navegue para [http://localhost:8000](http://localhost:8000) em seu navegador
    
 ### Verificação da Instalação
