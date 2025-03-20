@@ -50,8 +50,7 @@ jobs:
       - name: Deploy to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          RAILWAY_SERVICE_NAME: ${{secrets.RAILWAY_SERVICE_NAME}}
-          RAILWAY_PROJECT: ${{ secrets.RAILWAY_PROJECT_ID }}
         run: |
           echo "Deploying to Railway..."
-          railway up --service ${{ secrets.RAILWAY_SERVICE_NAME }} --project ${{ secrets.RAILWAY_PROJECT_ID }} --detach
+          railway link --project ${{ secrets.RAILWAY_PROJECT_ID }}
+          railway up --service ${{ secrets.RAILWAY_SERVICE_NAME }} --detach
