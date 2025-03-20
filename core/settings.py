@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-secret-key")
 
-DEBUG = int(os.getenv("DEBUG", 0))
+DEBUG = (os.getenv("DEBUG", False))
 
 ALLOWED_HOSTS = os.getenv(
     "ALLOWED_HOSTS", "localhost,127.0.0.1,0.0.0.0,.railway.app"
