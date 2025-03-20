@@ -6,21 +6,20 @@ WORKDIR /app
 # Copia os arquivos de dependências
 COPY requirements.txt .
 
-# Instala as dependências em um diretório temporário
-RUN pip install --user --no-cache-dir -r requirements.txt
+# Instala as dependências globalmente (sem --user)
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Estágio de produção
 FROM python:3.10-slim as production
 
 WORKDIR /app
 
-# Copia apenas as dependências instaladas
-COPY --from=builder /root/.local /root/.local
-COPY . .
+# Copia as dependências instaladas
+COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
 
-# Adiciona o diretório de dependências ao PATH
-ENV PATH=/root/.local/bin:$PATH
-ENV PYTHONPATH=/app
+# Copia o código da aplicação
+COPY . .
 
 # Expõe a porta 8000
 EXPOSE 8000
