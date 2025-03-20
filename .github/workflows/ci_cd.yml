@@ -43,12 +43,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+        
       - name: Install Railway CLI
         run: npm install -g @railway/cli
-      
+        
       - name: Deploy to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_SERVICE_NAME: ${{secrets.RAILWAY_SERVICE_NAME}}
+          RAILWAY_PROJECT: ${{ secrets.RAILWAY_PROJECT_ID }}
         run: |
-          railway up --detach
+          echo "Deploying to Railway..."
+          railway up --service ${{ secrets.RAILWAY_SERVICE_NAME }} --project ${{ secrets.RAILWAY_PROJECT_ID }} --detach
