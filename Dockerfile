@@ -29,5 +29,9 @@ RUN python manage.py collectstatic --noinput
 # Expõe a porta que o Gunicorn vai usar
 EXPOSE 8000
 
-# Comando para iniciar o Gunicorn
-CMD gunicorn core.wsgi:application --bind 0.0.0.0:$PORT
+# Copia o script de inicialização
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
+# Comando para iniciar o script
+CMD ["/app/start.sh"]
