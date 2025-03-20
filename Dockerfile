@@ -1,28 +1,33 @@
-# Estágio de construção
-FROM python:3.10-slim as builder
+FROM python:3.10-slim
 
+# Evita que Python crie arquivos .pyc
+ENV PYTHONDONTWRITEBYTECODE=1
+# Garante que a saída do Python seja enviada imediatamente para o terminal
+ENV PYTHONUNBUFFERED=1
+
+# Cria e define o diretório de trabalho
 WORKDIR /app
 
-# Copia os arquivos de dependências
+# Instala dependências do sistema
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  postgresql-client \
+  && rm -rf /var/lib/apt/lists/*
+
+# Copia os arquivos de requisitos primeiro para aproveitar o cache do Docker
 COPY requirements.txt .
 
-# Instala as dependências globalmente (sem --user)
+# Instala as dependências
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install gunicorn
 
-# Estágio de produção
-FROM python:3.10-slim as production
-
-WORKDIR /app
-
-# Copia as dependências instaladas
-COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
-COPY --from=builder /usr/local/bin /usr/local/bin
-
-# Copia o código da aplicação
+# Copia o resto do código para o container
 COPY . .
 
-# Expõe a porta 8000
+# Coleta arquivos estáticos
+RUN python manage.py collectstatic --noinput
+
+# Expõe a porta que o Gunicorn vai usar
 EXPOSE 8000
 
-# Comando para rodar o servidor com Gunicorn
-CMD ["gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "4"]
+# Comando para iniciar o Gunicorn
+CMD gunicorn core.wsgi:application --bind 0.0.0.0:$PORT

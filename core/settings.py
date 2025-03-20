@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import dj_database_url
 
 load_dotenv()
 
@@ -9,13 +10,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-secret-key")
 
-DEBUG = int(os.getenv("DEBUG", 1))
+DEBUG = int(os.getenv("DEBUG", 0))
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0", "https://pablotroli.pythonanywhere.com/"]
+ALLOWED_HOSTS = os.getenv(
+    "ALLOWED_HOSTS", "localhost,127.0.0.1,0.0.0.0,.railway.app"
+).split(",")
 
 AUTH_USER_MODEL = "users.User"
 
 CSRF_TRUSTED_ORIGINS = [
+    "https://*.railway.app",
     "https://localhost:8000",
     "http://localhost:8000",
 ]
@@ -35,6 +39,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -121,16 +126,18 @@ USE_TZ = True
 
 # Configurações de arquivos estáticos
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(
-    BASE_DIR, "staticfiles"
-)  # Para coletar arquivos estáticos em produção
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),  # Caminho relativo ao diretório base do projeto
+    os.path.join(BASE_DIR, "static"),
 ]
+
+# Configuração para servir arquivos estáticos com WhiteNoise
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 LOGIN_URL = "/login/"
 LOGOUT_REDIRECT_URL = "/login/"
 LOGIN_REDIRECT_URL = "zweets:feed"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -139,6 +146,14 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 if DEBUG:
     INSTALLED_APPS += ["django_extensions"]
 
+if not DEBUG:
+    SECURE_HSTS_SECONDS = 31536000  # 1 ano
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 REST_FRAMEWORK = {
     "UNAUTHENTICATED_USER": None,
